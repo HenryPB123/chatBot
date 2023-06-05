@@ -36,7 +36,7 @@ function getTime() {
 function firstBotMessage() {
   let firstMessage = "How's it going?";
   document.getElementById("botStarterMessage").innerHTML =
-    '<p class="botText"><span>' + firstMessage + "</span></p>";
+    "<p class='botText' ><span>" + firstMessage + "</span></p>";
 
   let time = getTime();
 
@@ -45,3 +45,49 @@ function firstBotMessage() {
 }
 
 firstBotMessage();
+
+// Retrieves the response
+function getHardResponse(userText) {
+  let botResponse = getBotResponse(userText);
+  let botHtml = "<p class='botText' ><span>" + botResponse + "</span></p>";
+
+  $("#chatbox").append(botHtml);
+
+  document.getElementById("chat-bar-bottom").scrollIntoView(true);
+}
+
+function getResponse() {
+  let userText = $("#textInput").val();
+  if (userText == "") userText = "I love be in troubles";
+
+  let userHtml = "<p class='userText' ><span>" + userText + "</span></p>";
+
+  $("#textInput").val("");
+  $("#chatbox").append(userHtml);
+  document.getElementById("chat-bar-bottom").scrollIntoView(true);
+
+  setTimeout(() => {
+    getHardResponse(userText);
+  }, 800);
+}
+
+function buttonSendText(sampleText) {
+  let userHtml = "<p class='userText' ><span>" + sampleText + "</span></p>";
+
+  $("#textInput").val("");
+  $("#chatbox").val(userHtml);
+  document.getElementById("chat-bar-bottom").scrollIntoView(true);
+}
+
+function sendButton() {
+  getResponse();
+}
+
+function heartButton() {
+  buttonSendText("Heart clicked!");
+}
+
+// Press enter to send a message
+$("#textInput").keypress(function (e) {
+  if (e.which == 13) getResponse();
+});
