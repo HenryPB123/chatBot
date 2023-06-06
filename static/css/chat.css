@@ -141,6 +141,21 @@
   animation: floatup 0.5s forwards;
 }
 
+.botText ul,
+li {
+  line-height: 1.5em;
+  display: flex;
+  background: #e0e0e0;
+  padding: 10px;
+  border-radius: 8px;
+  border-bottom-left-radius: 2px;
+  max-width: 80%;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  animation: floatup 0.5s forwards;
+}
+
 @keyframes floatup {
   from {
     transform: translateY(14px);

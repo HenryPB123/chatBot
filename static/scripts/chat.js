@@ -34,7 +34,7 @@ function getTime() {
 }
 
 function firstBotMessage() {
-  let firstMessage = "How's it going?";
+  let firstMessage = "Bienvenido a La Pizzería, ¿Cómo puedo ayudarl@?";
   document.getElementById("botStarterMessage").innerHTML =
     "<p class='botText' ><span>" + firstMessage + "</span></p>";
 
