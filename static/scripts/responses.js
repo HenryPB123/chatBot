@@ -9,11 +9,15 @@ var menu = RegExp(
 var order = RegExp("(PEDIDO|ORDEN|ORDÉN|PIZZA)");
 var toWant = RegExp("(QUIERO|DESEO|VOY|QUISIERA|GUSTARIA|GUSTARÍA)");
 var toHave = RegExp("(TIENE|TIENES|TIENEN|OFRECE|DISPONE)");
-var flavorChiken = RegExp("(POLLO|CAMPIÑONES)");
+var flavorChiken = RegExp("(POLLO|CHAMPIÑONES)");
 var flavorPeperonni = RegExp("(PEPERONI|PEPERONNI)");
 var flavorHawaianna = RegExp("(HAWAIANA|HAWAIANNA)");
 // var flavors = ["POLLO","CAMPIÑONES","PEPERONI","PEPERONNI","HAWAIANA","HAWAIANNA"]
 var price = RegExp("(PRECIO|VALOR|COSTO|CUESTA|VALE)");
+
+function sizesPizza(flavor) {
+  return `Sabor a  ${flavor} tiene tres tamaños disponibles: <ul><li>Pequeña (4 Porciones) cuesta 160 pesos</li><li>Mediana (8 Porciones) cuesta 220 pesos</li><li>Familiar (12 Porciones) cuesta 330 pesos</li></ul>`;
+}
 
 function getBotResponse(input) {
   input = input.toUpperCase();
@@ -25,11 +29,11 @@ function getBotResponse(input) {
   )
     return "El día de hoy ofrecemos los siguiéntes sabores: <ul><li>Peperonni</li><li>Pollo con champiñones</li><li>Hawaianna</li><li>¿Cúal le gustaría ordenar?</li></ul>";
   else if (toWant.test(input) == true && flavorChiken.test(input) == true)
-    return "Sabor a Pollo con champiñones tiene tres tamaños disponibles: <ul><li>Pequeña (4 Porciones) cuesta 160 pesos</li><li>Mediana (8 Porciones) cuesta 220 pesos</li><li>Familiar (12 Porciones) cuesta 330 pesos</li></ul> ";
+    return sizesPizza("Pollo con champiñones");
   else if (toWant.test(input) == true && flavorPeperonni.test(input) == true)
-    return "Sabor a Peperonni tiene tres tamaños disponibles: <ul><li>Pequeña (4 Porciones) cuesta 165 pesos</li><li>Mediana (8 Porciones) cuesta 225 pesos</li><li>Familiar (12 Porciones) cuesta 335 pesos</li></ul>";
+    return sizesPizza("Peperonni");
   else if (toWant.test(input) == true && flavorHawaianna.test(input) == true)
-    return "Sabor a Hawaianna tiene tres tamaños disponibles: <ul><li>Pequeña (4 Porciones) cuesta 150 pesos</li><li>Mediana (8 Porciones) cuesta 200 pesos</li><li>Familiar (12 Porciones) cuesta 300 pesos</li></ul>";
+    return sizesPizza("Hawaianna");
   else return "Por favor reformula tu pregunta.";
 
   // // rock paper scissors
