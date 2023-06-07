@@ -34,7 +34,7 @@ function getTime() {
 }
 
 function firstBotMessage() {
-  let firstMessage = "Bienvenido a La Pizzería, ¿Cómo puedo ayudarl@?";
+  let firstMessage = "Bienvenid@ a La Pizzería";
   document.getElementById("botStarterMessage").innerHTML =
     "<p class='botText' ><span>" + firstMessage + "</span></p>";
 
@@ -58,7 +58,6 @@ function getHardResponse(userText) {
 
 function getResponse() {
   let userText = $("#textInput").val();
-  if (userText == "") userText = "I love be in troubles";
 
   let userHtml = "<p class='userText' ><span>" + userText + "</span></p>";
 
