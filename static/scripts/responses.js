@@ -13,7 +13,7 @@ var carta = RegExp(
 );
 var order = RegExp("(PEDIDO|ORDEN|ORDÉN|PIZZA)");
 var toWant = RegExp(
-  "(MUESTRA|MUESTRAS|PUEDES|QUIERO|DESEO|VOY|QUISIERA|GUSTARIA|GUSTARÍA|DAME|DEME)"
+  "(MUESTRA|MUESTRAS|PUEDES|QUIERO|DESEO|VOY|QUISIERA|GUSTARIA|GUSTARÍA|DAME|DEME|DA)"
 );
 var toHave = RegExp("(TIENE|TIENES|TIENEN|OFRECE|DISPONE)");
 var flavorsPizza = RegExp(
@@ -45,9 +45,70 @@ function menu() {
   return `El día de hoy ofrecemos los siguiéntes sabores:\n <b>Peperonni,</b>\n<b>Pollo con champiñones y </b>\n<b>Hawaianna</b>\n¿Cúal le gustaría?`;
 }
 
+function selectFlavor(input) {
+  input = upperCase(input);
+
+  if (input.includes("POLLO") || input.includes("CHAMPIÑONES"))
+    return {
+      name: "Pollo con Champiñones",
+      prices: { small: 160, medium: 220, large: 330 },
+    };
+  if (input.includes("PEPERONI") || input.includes("PEPERONNI"))
+    return {
+      name: "Peperonni",
+      prices: { small: 165, medium: 225, large: 335 },
+    };
+  if (input.includes("HAWAIANA") || input.includes("HAWAIANNA"))
+    return {
+      name: "Hawaianna",
+      prices: { small: 150, medium: 210, large: 320 },
+    };
+}
+
+function sizeAvaliable(flavor) {
+  return `La pizza de ${flavor.name} está disponible en tres tamaños: <ul><li>Pequeña (4 porciones). Cuesta ${flavor.prices.small} pesos.</li> <li>Mediana (8 Porciones). Cuesta ${flavor.prices.medium} pesos.</li><li>Grande (12 Porciones). Cuesta ${flavor.prices.large} pesos.</li><li>¿Cúal te gustaría ordenar?</li></ul>`;
+}
+
+function messageConfirmSize(input, flavor) {
+  if (input.includes("PEQUEÑA"))
+    return `Ha seleccionado la pizza pequeña del sabor <b>${flavor}</b>. Sí la orden en correcta escribe <b>SI</b> o <b>NO</b> para cancelar o cambiar la orden`;
+  else if (input.includes("MEDIANA"))
+    return `Ha seleccionado la pizza mediana del sabor <b>${flavor}</b>. Sí la orden en correcta escribe <b>SI</b> o <b>NO</b> para cancelar o cambiar la orden`;
+  else if (input.includes("GRANDE"))
+    return `Ha seleccionado la pizza grande del sabor <b>${flavor}</b>. Sí la orden en correcta escribe <b>SI</b> o <b>NO</b> para cancelar o cambiar la orden`;
+}
+
 function flavors(input) {
-  console.log("input", input);
-  return "sabores";
+  let flavor = selectFlavor(input);
+  let sabor = flavor.name;
+
+  //arreglar acá
+  if (flavor.name === "Hawaianna") {
+    // ojo
+    if (sizes.test(input)) return messageConfirmSize(input, sabor);
+    return sizeAvaliable(flavor);
+  } else if (flavor.name === "Pollo con Champiñones") {
+    if (sizes.test(input)) return messageConfirmSize(input, sabor);
+
+    return sizeAvaliable(flavor);
+  } else if (flavor.name === "Peperonni") {
+    if (sizes.test(input)) return messageConfirmSize(input, sabor);
+    return sizeAvaliable(flavor);
+  }
+}
+
+function selectSize(input) {
+  input = upperCase(input);
+  console.log("imputado", input);
+
+  // let pizza
+  // let size;
+  // if (input.includes("PEQUEÑA"))
+  //   return `Ha seleccionado la pizza pequeña del sabor <b>${pizza.name}</b>. Sí la orden en correcta escribe <b>SI</b> o <b>NO</b> para cancelar o cambiar la orden`;
+  // else if (input.includes("PEQUEÑA"))
+  //   return `Ha seleccionado la pizza mediana del sabor <b>${pizza.name}</b>. Sí la orden en correcta escribe <b>SI</b> o <b>NO</b> para cancelar o cambiar la orden`;
+  // else if (input.includes("PEQUEÑA"))
+  //   return `Ha seleccionado la pizza grande del sabor <b>${pizza.name}</b>. Sí la orden en correcta escribe <b>SI</b> o <b>NO</b> para cancelar o cambiar la orden`;
 }
 
 function getBotResponse(input) {
@@ -57,19 +118,8 @@ function getBotResponse(input) {
   else if (what.test(input) == true && carta.test(input) == true) return menu();
   else if (toWant.test(input) == true && flavorsPizza.test(input) == true)
     return flavors(input);
-  // else if (
-  //   (toWant.test(input) == true || what.test(input) == true) &&
-  //   menu.test(input) == true
-  // )
-  //   return "El día de hoy ofrecemos los siguiéntes sabores: <ul><li>Peperonni</li><li>Pollo con champiñones</li><li>Hawaianna</li><li>¿Cúal le gustaría ordenar?</li></ul>";
-  // else if (toWant.test(input) == true && flavorChiken.test(input) == true)
-  //   return flavorsPizza("Pollo con champiñones");
-  // else if (toWant.test(input) == true && flavorPeperonni.test(input) == true)
-  //   return flavorsPizza("Peperonni");
-  // else if (toWant.test(input) == true && flavorHawaianna.test(input) == true)
-  //   return flavorsPizza("Hawaianna");
-  // else if (toWant.test(input) == true && sizes.test(input) == true)
-  //   return sizesPizza(input);
+  else if (toWant.test(input) == true && sizes.test(input) == true)
+    return flavors(input);
   else return "Por favor reformula tu pregunta.";
 
   // // rock paper scissors

@@ -142,10 +142,11 @@
   animation: floatup 0.5s forwards;
 }
 
-/* .botText ul,
+.botText ul,
 li {
   line-height: 1.5em;
-  display: flex;
+  /* display: flex; */
+  display: block;
   background: #e0e0e0;
   padding: 10px;
   border-radius: 8px;
@@ -155,7 +156,7 @@ li {
   margin-bottom: 2px;
   margin-left: 0;
   animation: floatup 0.5s forwards;
-} */
+}
 
 @keyframes floatup {
   from {
