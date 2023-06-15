@@ -6,7 +6,7 @@ var afternoonGreet = RegExp("(BUENA TARDE|BUENAS TARDES)");
 var eveningGreet = RegExp("(BUENA NOCHE|BUENAS NOCHES)");
 
 var what = RegExp(
-  "(QUE|QUÉ|CUAL|CUÁL|CUALES|SABER|CONOCER|ENVIA|ENVÍA|ENVIAS|ENVÍAS|DA|PODRIA|PODRÍA|PODRÍAS|PODRIAS)"
+  "(QUE|QUÉ|CUAL|CUÁL|CUALES|SABER|CONOCER|ENVIA|ENVÍA|ENVIAS|ENVÍAS|DA|PODRIA|PODRÍA|PODRÍAS|PODRIAS|QUIERO)"
 );
 var carta = RegExp(
   "(MENU|MENÚ|CARTA|TIPO|TIPOS|CLASSES|CLASE|SABOR|SABORES|PIZZA|PIZZAS|PIZA|PIZAS)"
@@ -24,6 +24,27 @@ var flavorPeperonni = RegExp("(PEPERONI|PEPERONNI)");
 var flavorHawaianna = RegExp("(HAWAIANA|HAWAIANNA)");
 var sizes = RegExp("(PEQUEÑA|MEDIANA|GRANDE)");
 var price = RegExp("(PRECIO|VALOR|COSTO|CUESTA|VALE)");
+var siNo = RegExp("(SI|NO)");
+var movil = RegExp("([0-9][ -]*){10}");
+var despedida = RegExp("(GRACIAS)");
+var sabores = [
+  {
+    name: "Pollo con Champiñones",
+    sizes: { small: "Pequeña", medium: "Mediana", large: "Grande" },
+    prices: { small: 160, medium: 220, large: 330 },
+  },
+  {
+    name: "Peperonni",
+    sizes: { small: "Pequeña", medium: "Mediana", large: "Grande" },
+    prices: { small: 165, medium: 225, large: 335 },
+  },
+  {
+    name: "Hawaianna",
+    sizes: { small: "Pequeña", medium: "Mediana", large: "Grande" },
+    prices: { small: 150, medium: 210, large: 320 },
+  },
+];
+var ordenFinal = {};
 
 function upperCase(input) {
   return (input = input.toUpperCase());
@@ -51,16 +72,19 @@ function selectFlavor(input) {
   if (input.includes("POLLO") || input.includes("CHAMPIÑONES"))
     return {
       name: "Pollo con Champiñones",
+      sizes: { small: "Pequeña", medium: "Mediana", large: "Grande" },
       prices: { small: 160, medium: 220, large: 330 },
     };
   if (input.includes("PEPERONI") || input.includes("PEPERONNI"))
     return {
       name: "Peperonni",
+      sizes: { small: "Pequeña", medium: "Mediana", large: "Grande" },
       prices: { small: 165, medium: 225, large: 335 },
     };
   if (input.includes("HAWAIANA") || input.includes("HAWAIANNA"))
     return {
       name: "Hawaianna",
+      sizes: { small: "Pequeña", medium: "Mediana", large: "Grande" },
       prices: { small: 150, medium: 210, large: 320 },
     };
 }
@@ -69,46 +93,62 @@ function sizeAvaliable(flavor) {
   return `La pizza de ${flavor.name} está disponible en tres tamaños: <ul><li>Pequeña (4 porciones). Cuesta ${flavor.prices.small} pesos.</li> <li>Mediana (8 Porciones). Cuesta ${flavor.prices.medium} pesos.</li><li>Grande (12 Porciones). Cuesta ${flavor.prices.large} pesos.</li><li>¿Cúal te gustaría ordenar?</li></ul>`;
 }
 
-function messageConfirmSize(input, flavor) {
-  if (input.includes("PEQUEÑA"))
-    return `Ha seleccionado la pizza pequeña del sabor <b>${flavor}</b>. Sí la orden en correcta escribe <b>SI</b> o <b>NO</b> para cancelar o cambiar la orden`;
-  else if (input.includes("MEDIANA"))
-    return `Ha seleccionado la pizza mediana del sabor <b>${flavor}</b>. Sí la orden en correcta escribe <b>SI</b> o <b>NO</b> para cancelar o cambiar la orden`;
-  else if (input.includes("GRANDE"))
-    return `Ha seleccionado la pizza grande del sabor <b>${flavor}</b>. Sí la orden en correcta escribe <b>SI</b> o <b>NO</b> para cancelar o cambiar la orden`;
-}
-
 function flavors(input) {
   let flavor = selectFlavor(input);
-  let sabor = flavor.name;
 
-  //arreglar acá
+  ordenFinal.name = flavor.name;
   if (flavor.name === "Hawaianna") {
-    // ojo
-    if (sizes.test(input)) return messageConfirmSize(input, sabor);
     return sizeAvaliable(flavor);
   } else if (flavor.name === "Pollo con Champiñones") {
-    if (sizes.test(input)) return messageConfirmSize(input, sabor);
-
     return sizeAvaliable(flavor);
   } else if (flavor.name === "Peperonni") {
-    if (sizes.test(input)) return messageConfirmSize(input, sabor);
     return sizeAvaliable(flavor);
   }
 }
 
+//!pendiente
+// function retornOrder(namePizza) {
+// for(let i=0;i<sabores.length;i++){
+//   if(namePizza===sabores[i].name)return
+// }
+// }
+
 function selectSize(input) {
   input = upperCase(input);
-  console.log("imputado", input);
 
-  // let pizza
-  // let size;
-  // if (input.includes("PEQUEÑA"))
-  //   return `Ha seleccionado la pizza pequeña del sabor <b>${pizza.name}</b>. Sí la orden en correcta escribe <b>SI</b> o <b>NO</b> para cancelar o cambiar la orden`;
-  // else if (input.includes("PEQUEÑA"))
-  //   return `Ha seleccionado la pizza mediana del sabor <b>${pizza.name}</b>. Sí la orden en correcta escribe <b>SI</b> o <b>NO</b> para cancelar o cambiar la orden`;
-  // else if (input.includes("PEQUEÑA"))
-  //   return `Ha seleccionado la pizza grande del sabor <b>${pizza.name}</b>. Sí la orden en correcta escribe <b>SI</b> o <b>NO</b> para cancelar o cambiar la orden`;
+  if (input.includes("PEQUEÑA")) {
+    if (ordenFinal.name === "Hawaianna") ordenFinal.price = 150;
+    if (ordenFinal.name === "Pollo con Champiñones") ordenFinal.price = 160;
+    if (ordenFinal.name === "Peperonni") ordenFinal.price = 165;
+    ordenFinal.size = "Pequeña";
+    return `Ha seleccionado la pizza pequeña del sabor <b>${ordenFinal.name}</b>. Sí la orden es correcta escribe <b>SI</b> para confirmar o <b>NO</b> para cancelar.`;
+  } else if (input.includes("MEDIANA")) {
+    if (ordenFinal.name === "Hawaianna") ordenFinal.price = 210;
+    if (ordenFinal.name === "Pollo con Champiñones") ordenFinal.price = 220;
+    if (ordenFinal.name === "Peperonni") ordenFinal.price = 225;
+    ordenFinal.size = "Mediana";
+    return `Ha seleccionado la pizza mediana del sabor <b>${ordenFinal.name}</b>. Sí la orden es correcta escribe <b>SI</b> para confirmar o <b>NO</b> para cancelar.`;
+  } else if (input.includes("GRANDE")) {
+    if (ordenFinal.name === "Hawaianna") ordenFinal.price = 320;
+    if (ordenFinal.name === "Pollo con Champiñones") ordenFinal.price = 330;
+    if (ordenFinal.name === "Peperonni") ordenFinal.price = 335;
+
+    ordenFinal.size = "Grande";
+    return `Has seleccionado la pizza grande de sabor <b>${ordenFinal.name}</b>. Sí la orden es correcta escribe <b>SI</b> para confirmar o <b>NO</b> para cancelar.`;
+  }
+}
+
+function confirmationOrden(input) {
+  input = input.toUpperCase();
+  if (input.includes("SI")) {
+    return `Su pedido confirmado es: Una pizza de <b>${ordenFinal.name}</b>, de tamaño <b>${ordenFinal.size}</b> y cuesta <b>${ordenFinal.price}</b> pesos. Por favor escribe un número de telefono celular para enviar la factura.`;
+  }
+  console.log(ordenFinal);
+  if (input.includes("NO")) return `Has cancelado tu pedido.`;
+}
+
+function phoneConfirmation() {
+  return "El pedido se ha hecho correctamente y estara listo en 25 minutos.";
 }
 
 function getBotResponse(input) {
@@ -116,19 +156,15 @@ function getBotResponse(input) {
   if (input === "") return "No has escrito nada, ¿Qué te gustaría saber?";
   else if (saludo.test(input) == true) return toGreet(input);
   else if (what.test(input) == true && carta.test(input) == true) return menu();
-  else if (toWant.test(input) == true && flavorsPizza.test(input) == true)
-    return flavors(input);
-  else if (toWant.test(input) == true && sizes.test(input) == true)
-    return flavors(input);
+  else if (flavorsPizza.test(input) == true) return flavors(input);
+  // else if (toWant.test(input) == true && flavorsPizza.test(input) == true)
+  //   return flavors(input);
+  else if (sizes.test(input) == true) return selectSize(input);
+  // else if (toWant.test(input) == true && sizes.test(input) == true)
+  //   return selectSize(input);
+  else if (siNo.test(input) == true) return confirmationOrden(input);
+  else if (movil.test(input) == true) return phoneConfirmation();
+  else if (despedida.test(input.toUpperCase()) == true)
+    return "Con gusto, esperamos verte de regreso pronto!!!!";
   else return "Por favor reformula tu pregunta.";
-
-  // // rock paper scissors
-  // if (input == "rock") return "paper";
-  // else if (input == "paper") return "scissors";
-  // else if (input == "scissors") return "rock";
-
-  // // Simple responses
-  // if (input == "hello") return "Hello There!";
-  // else if (input == "goodbye") return "Talk to you later!";
-  // else return "Try asking something else!";
 }
